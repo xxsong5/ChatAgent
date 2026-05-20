@@ -1,0 +1,33 @@
+{
+    "base_url": "https://api.deepseek.com",
+    "api_key": "DEEPSEEK_API_KEY",
+    "model": "deepseek-chat",
+    "temperature": 0.7,
+    "max_tokens": 20000,
+    "timeout": 120,
+    "max_iterations": 100,
+    "skills_dir": "config/skills",
+    "sessions_dir": "config/sessions",
+    "server": {
+        "type": "web",
+        "host": "0.0.0.0",
+        "port": 8080,
+        "apikey": "sk-sdf"
+    },
+    "sandbox": {
+        "enabled": true,
+        "image": "chat-agent:latest",
+        "mountReadWrite": false,
+        "mountPath": "",
+        "shareReplica": false,
+        "maxReplicas": 5,
+        "warmupReplicas": 2,
+        "memoryMB": 256,
+        "nanoCPUs": 500000000,
+        "networkMode": "bridge",
+        "containerTTL": 1800,
+        "startTimeout": 30,
+        "execTimeout": 10
+    },
+    "mcp_server_config": []
+}

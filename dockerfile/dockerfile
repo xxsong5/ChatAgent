@@ -1,0 +1,142 @@
+# ============================================================
+# Chat-Agent 增强镜像 Dockerfile
+# 基于 Alpine Linux，为 AI Agent 预装各类增强工具
+# ============================================================
+
+FROM alpine:3.20
+
+LABEL maintainer="Chat-Agent Team"
+LABEL description="Chat-Agent 增强运行环境 - 预装开发、文档处理、数据分析等工具"
+
+# ============================================================
+# 第一部分：基础工具
+# ============================================================
+RUN apk add --no-cache \
+    ca-certificates \
+    curl \
+    wget \
+    git \
+    vim \
+    nano \
+    unzip \
+    zip \
+    tar \
+    gzip \
+    bzip2 \
+    xz \
+    jq \
+    tree \
+    tmux \
+    bash \
+    bash-completion \
+    && update-ca-certificates
+
+# ============================================================
+# 第二部分：编程语言运行时
+# ============================================================
+# 安装基础依赖
+RUN apk add --no-cache \
+    python3 \
+    py3-pip \
+    python3-dev \
+    gcc \
+    musl-dev \
+    g++ \
+    make \
+    libffi-dev \
+    openssl-dev \
+    libxml2-dev \
+    libxslt-dev \
+    freetype-dev \
+    libpng-dev \
+    jpeg-dev \
+    zlib-dev
+
+RUN python3 -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir \
+        numpy \
+        pandas \
+        openpyxl \
+        xlrd \
+        requests \
+        httpx \
+        aiohttp \
+        PyPDF2 \
+        pdfplumber \
+        python-docx \
+        markdown \
+        beautifulsoup4 \
+        lxml \
+        matplotlib \
+        seaborn \
+        plotly \
+        python-dotenv \
+        pyyaml \
+        tqdm \
+        pytest \
+        black \
+        ruff && rm -rf /root/.cache/pip
+
+# --- Node.js ---
+RUN apk add --no-cache nodejs npm
+
+# --- Go ---
+RUN apk add --no-cache go
+
+# ============================================================
+# 第三部分：文档处理工具
+# ============================================================
+RUN apk add --no-cache \
+    poppler-utils \
+    imagemagick \
+    tesseract-ocr \
+    tesseract-ocr-data-chi_sim \
+    tesseract-ocr-data-eng \
+    pandoc \
+    ripgrep \
+    fd \
+    bat
+
+# ============================================================
+# 第四部分：开发与编译工具
+# ============================================================
+RUN apk add --no-cache \
+    build-base \
+    gcc \
+    g++ \
+    make \
+    cmake \
+    pkgconfig \
+    sqlite \
+    postgresql-client \
+    redis \
+    net-tools \
+    iputils \
+    bind-tools \
+    nmap-ncat \
+    mercurial \
+    ffmpeg \
+    p7zip \
+    lsof \
+    strace \
+    openssl \
+    shadow
+
+# ============================================================
+# 第五部分：配置
+# ============================================================
+WORKDIR /workspace
+
+RUN git config --global user.name "AI Agent" && \
+    git config --global user.email "agent@chat-agent.local"
+
+RUN ln -sf /usr/bin/python3 /usr/bin/python
+
+ENV SHELL=/bin/bash
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
+
+CMD ["/bin/bash"]
