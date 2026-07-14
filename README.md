@@ -1,4 +1,4 @@
-# Chat Agent
+# ESTA-Agent
 
 A versatile AI agent framework built with Go, supporting multiple server modes, MCP (Model Context Protocol) integration, and sandboxed code execution.
 
